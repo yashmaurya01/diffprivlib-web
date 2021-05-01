@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>Differentially Private</title>
+  <link rel="shortcut icon" href='https://svgshare.com/i/WYQ.svg' title='asd' type="image/x-icon">
+
+	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="../static/css/style.css">
+	<link href="http://cdn.pydata.org/bokeh/release/bokeh-1.2.0.min.css" rel="stylesheet">
+    <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.2.0.min.css" rel="stylesheet">
+	<!-- add icon link -->
+	
+</head>
+
+<body>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="http://cdn.pydata.org/bokeh/release/bokeh-1.2.0.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.2.0.min.js"></script>
+
+	
+
+	<!-- Image and text -->
+
+	<nav class="navbar navbar-light bg-light">
+		<a class="navbar-brand" href="">
+		<img src='https://svgshare.com/i/WYQ.svg' title='asd' width="30" height="30" class="d-inline-block align-top" alt="">
+		DynamoFL
+		</a>
+  	</nav>
+	
+	<br>
+	<br>
+	<center>
+		<h3>Differentially Private Operations</h3>
+
+		<br>
+		<br>
+
+		<script>
+			function uploadFile(target) {
+				document.getElementById("file-name").innerHTML = target.files[0].name;
+			}
+			
+		</script>
+
+		<form action="#" method='post' enctype="multipart/form-data">
+			<div class="inputfile-box">
+				<input type="file" id=file name=file class="inputfile" onchange='uploadFile(this)'>
+
+				<label for=file>
+					<span id="file-name" class="file-box"></span>
+					<br>
+					<br>
+					<span class="file-button">
+						<i class="fa fa-upload" aria-hidden="true"></i>
+						Select File
+					</span>	
+					<span>
+						<input type="submit" class="btn btn-info" value="Upload">
+					</span>
+				</label>
+			</div>
+		</form>
+
+		{% if preview %}
+
+		<br>
+		<br>
+
+		<h4>Dataset Preview</h4>
+		<center>
+
+			{{ data|safe }}
+
+		</center>
+
+		{% endif %}
+
+		{% if categorize %}
+
+
+		<br><br>
+		<form action="{{url_for('categorize')}}" method = "post">
+			<label for="epsilon">Epsilon:</label>
+			<input type="number" class='inp-box' id='epsilon' name='epsilon' min="0" step="0.001">
+			<br>
+
+			<!-- <label for="delta">Delta:</label>
+			<input type="number" class='inp-box' id='delta' name='delta' min="0" max="1" step="0.001" value='1.0'>
+			<br>
+
+			<label for="slack">Slack:</label>
+			<input type="number" class='inp-box' id='slack' name='slack' min="0" step="0.001" value='0.0'>
+			<br> -->
+
+			<label for="target">Choose target column:</label>
+			<select name="target" id="target">
+			{% for col in headers %}
+				<option value="{{col}}">{{col}}</option>
+			{% endfor %}
+			</select>
+
+			<br>
+			<input type="submit" class="btn btn-info" value="Submit">
+		</form>
+
+		<br>
+		<br>
+
+		{% endif %}
+		<br>
+
+		{% if histogram %}
+			<img src= {{url_for('static', filename= plotname )}} alt="Chart" height="375" width="500">
+			<br>
+			<br>
+			
+			<div class="stats">
+			<b>Total histogram error : </b> {{hist_err}} <br>
+			<br>
+			<b>Count Non-Zero : </b> {{dp_count_nonzero}}<br>
+			<b>Mean : </b>{{dp_mean}}<br>
+			<b>Standard Deviation : </b>{{dp_std}}<br>
+			<b>Sum : </b>{{dp_sum}}<br>
+			<br>
+
+			</div>
+
+		{% endif %}
+	
+
+		<br>
+		<br>
+
+		{% with messages = get_flashed_messages()%}
+			{% if messages %}
+				{% for msg in messages %}
+				<div class="alert alert-success">{{msg}}</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+
+	</center>
+	</body>
+
+</html>

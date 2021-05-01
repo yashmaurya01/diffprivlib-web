@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-6">
+                {{ something }}
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. </p>
+            </div>
+        </div>
+        <div class="row mt-5">
+            histogram here
+            {{ div_hist_age }}
+            {{ div_hist_age | safe }}
+        </div>
+    </div>
+    {{ script_hist_age}}
+    {{ script_hist_age | safe }}
+{% endblock %}
